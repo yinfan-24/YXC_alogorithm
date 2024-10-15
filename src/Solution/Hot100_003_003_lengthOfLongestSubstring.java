@@ -2,7 +2,7 @@ package Solution;
 
 import static java.lang.Math.max;
 
-public class Hot100_002_003_lengthOfLongestSubstring {
+public class Hot100_003_003_lengthOfLongestSubstring {
     public static void main(String[] args) {
         String s = "abcabcbb";
         System.out.println(lengthOfLongestSubstring(s));
