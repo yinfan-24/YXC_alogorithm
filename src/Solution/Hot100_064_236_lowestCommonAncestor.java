@@ -4,9 +4,9 @@ public class Hot100_064_236_lowestCommonAncestor {
 
     private TreeNode ans;
 
-    public Solution(){
-        this.ans = null;
-    }
+//    public Solution(){
+//        this.ans = null;
+//    }
     public boolean dfs(TreeNode root, TreeNode p, TreeNode q){
 //        判断当前节点的左右子树是否包含p节点和q节点。
         if (root == null) return false;
