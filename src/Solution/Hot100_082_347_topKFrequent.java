@@ -1,39 +1,18 @@
 package Solution;
 
-import com.sun.deploy.util.OrderedHashSet;
-
+import java.net.Inet4Address;
 import java.util.*;
 
 public class Hot100_082_347_topKFrequent {
-    public List<Integer> topKFrequent(int[] nums, int k) {
-        // 使用字典，统计每个元素出现的次数，元素为键，元素出现的次数为值
-        HashMap<Integer,Integer> map = new HashMap();
-        for(int num : nums){
-            if (map.containsKey(num)) {
-                map.put(num, map.get(num) + 1);
-            } else {
-                map.put(num, 1);
-            }
-        }
-        // 遍历map，用最小堆保存频率最大的k个元素
-        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer a, Integer b) {
-                return map.get(a) - map.get(b);
-            }
-        });
-        for (Integer key : map.keySet()) {
-            if (pq.size() < k) {
-                pq.add(key);
-            } else if (map.get(key) > map.get(pq.peek())) {
-                pq.remove();
-                pq.add(key);
-            }
-        }
-        // 取出最小堆中的元素
-        List<Integer> res = new ArrayList<>();
-        while (!pq.isEmpty()) {
-            res.add(pq.remove());
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        Arrays.stream(nums).forEach(num -> map.put(num, map.getOrDefault(num, 0) + 1));
+        Queue<Integer> queue = new PriorityQueue<>((a, b) -> map.get(b) - map.get(a));
+
+        map.keySet().stream().forEach(queue::add);
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = queue.poll();
         }
         return res;
     }
