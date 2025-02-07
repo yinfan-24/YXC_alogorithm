@@ -10,7 +10,6 @@ public class Hot100_027_062_uniquePaths {
                 if (j > 0) dp[i][j] += dp[i][j-1];
             }
         }
-
         return dp[m-1][n-1];
     }
 }
