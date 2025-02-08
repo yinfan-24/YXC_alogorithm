@@ -12,16 +12,16 @@ public class Hot100_033_078_subsets {
         System.out.println(subsets(nums));
     }
 
-    static List<List<Integer>> res = new ArrayList<>();
+    static List<List<Integer>> res;
     public static List<List<Integer>> subsets(int[] nums) {
-        res.clear();
+        res = new LinkedList<>();
         backTrace(nums, 0, new LinkedList<>());
         return res;
     }
 
-    public static void backTrace(int[] nums, int index, LinkedList<Integer> path){
+    public static void backTrace(int[] nums, int idx, LinkedList<Integer> path){
         res.add(new LinkedList<>(path));
-        for (int i = index; i < nums.length; i++) {
+        for (int i = idx; i < nums.length; i++) {
             path.add(nums[i]);
             backTrace(nums, i+1, path);
             path.removeLast();

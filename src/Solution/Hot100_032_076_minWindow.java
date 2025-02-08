@@ -7,50 +7,36 @@ public class Hot100_032_076_minWindow {
         System.out.println(minWindow(s, t));
     }
     public static String minWindow(String s, String t) {
-
-        int[] cnt = new int[56];
-        int[] need = new int[56];
-
-        int m = t.length();
-        for (int i = 0; i < m; i++) {
-            need[get_key(t.charAt(i))]++;
+        if (s == null || t == null || s.length() < t.length()){
+            return "";
         }
 
-        int l = 0, r = 0;
-        String res = "";
-        while (r < s.length()){
-            while (!check(cnt, need) && r < s.length()){
-                cnt[get_key(s.charAt(r))] ++;
-                r++;
-            }
-            if (res.equals("") && check(cnt, need)){
-                res = s.substring(l, r);
-            }
-            while (check(cnt, need) && l < r){
-
-                cnt[get_key(s.charAt(l))] --;
-                l++;
-            }
-//            因为l是临界点右移退出的循环
-            if (r-l+1 < res.length()){
-                res = s.substring(l-1, r);
-            }
-
+        int[] cnt = new int[128];
+        int n = s.length(), remainChar = 0;
+        for (char c: t.toCharArray()){
+            if (cnt[c] == 0) remainChar++;
+            cnt[c]++;
         }
 
+        int resLeft = -1, resRight = n;
+        char[] sArray = s.toCharArray();
+        for (int l = 0, r = 0; r < n; r++) {
+            char c = sArray[r];
+            cnt[c]--;
+            if (cnt[c] == 0) remainChar--;
 
-        return res;
-    }
-
-    public static boolean check(int[] cnt, int[] need){
-//        是否为问题的一个解
-        for (int i = 0; i < cnt.length; i++) {
-            if (cnt[i] < need [i]) return false;
+//            左移l的操作
+            while (remainChar == 0 && l < n){
+                if (r-l < resRight-resLeft){
+                    resRight = r;
+                    resLeft = l;
+                }
+                char k = sArray[l++];
+                cnt[k]++;
+                if (cnt[k] > 0) remainChar++;
+            }
         }
-        return true;
-    }
 
-    public static int get_key(Character tmp){
-        return tmp - 'A';
+        return resRight == n ? "" : s.substring(resLeft, resRight+1);
     }
 }

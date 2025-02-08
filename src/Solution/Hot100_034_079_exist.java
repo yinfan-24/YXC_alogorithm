@@ -1,59 +1,49 @@
 package Solution;
 
 public class Hot100_034_079_exist {
-    int m;
-    int n;
-    char[][] g;
-    boolean[][] visited;
-    String word;
-    int[] dx = new int[]{0, 1, 0, -1};
-    int[] dy = new int[]{1, 0, -1, 0};
+
+    static int[][] DIRC = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     public boolean exist(char[][] board, String word) {
-        if (board == null || board.length == 0 || board[0].length == 0){
-            return false;
+        int[] cnt = new int[128];
+        for (char[] row : board){
+            for (char c: row){
+                cnt[c]++;
+            }
         }
 
-        m = board.length;
-        n = board[0].length;
-        g = board;
-        this.word = word;
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (word.charAt(0) == board[i][j]){
-//                    找到可能开始的开头
-                    visited = new boolean[m][n];
-                    if (dfs(i,j, new StringBuilder())){
-                        return true;
-                    }
+        char[] w = word.toCharArray();
+        int[] w_cnt = new int[128];
+        for (char c: w){
+            w_cnt[c]++;
+            if (w_cnt[c] > cnt[c]) return false;
+        }
+        if (cnt[w[w.length-1]] < cnt[w[0]]){
+            w = new StringBuilder(word).reverse().toString().toCharArray();
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs(i, j, 0, board, w)){
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    boolean dfs(int x, int y, StringBuilder sb){
-//        还没纳入就已经满员
-        if (sb.length() == word.length()) return false;
+    private static boolean dfs(int i, int j, int k, char[][] board, char[] w){
+        if (board[i][j] != w[k]) return false;
+        if (k == w.length-1) return true;
 
-        sb.append(g[x][y]);
-        visited[x][y] = true;
-
-        if (sb.toString().equals(word))
-            return true;
-
-        for (int i = 0; i < 4; i++) {
-            int a = x + dx[i];
-            int b = y + dy[i];
-
-            if (a<0 || a>=m || b<0 || b>=n || visited[a][b]){
-                continue;
+        board[i][j] = 0;
+        for (int[] dic: DIRC){
+            int x = i + dic[0];
+            int y = j + dic[1];
+            if (x >=0 && x < board.length && y >= 0 && y < board[0].length && dfs(x, y, k++, board, w)){
+                return true;
             }
-            if (dfs(a,b,sb)) return true;
         }
-
-        sb.deleteCharAt(sb.length()-1);
-        visited[x][y] = false;
+        board[i][j] = w[k];
         return false;
     }
+
 }
