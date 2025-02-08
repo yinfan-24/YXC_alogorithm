@@ -1,23 +1,30 @@
 package Solution;
 
+import javax.print.DocFlavor;
+
 public class Hot100_012_021_mergeTwoLists {
     public ListNode mergeTwoLists(ListNode a, ListNode b) {
-        if (a == null || b == null) {
+        if (a == null || b == null){
             return a != null ? a : b;
         }
-        ListNode head = new ListNode(0);
-        ListNode tail = head, aPtr = a, bPtr = b;
-        while (aPtr != null && bPtr != null) {
-            if (aPtr.val < bPtr.val) {
-                tail.next = aPtr;
-                aPtr = aPtr.next;
-            } else {
-                tail.next = bPtr;
-                bPtr = bPtr.next;
+
+        ListNode head = new ListNode();
+        ListNode cur = head;
+        ListNode aPt = a, bPt = b;
+        while (aPt != null && bPt != null){
+            if (aPt.val < bPt.val){
+                cur.next = aPt;
+                aPt = aPt.next;
+            }else {
+                cur.next = bPt;
+                bPt = bPt.next;
             }
-            tail = tail.next;
+            cur = cur.next;
         }
-        tail.next = (aPtr != null ? aPtr : bPtr);
+        if (aPt != null || bPt != null){
+            cur.next = aPt != null ? aPt : bPt;
+        }
+
         return head.next;
     }
 

@@ -1,34 +1,30 @@
 package Solution;
 
+import java.util.HashMap;
+
 import static java.lang.Math.max;
 
 public class Hot100_003_003_lengthOfLongestSubstring {
     public static void main(String[] args) {
-        String s = "abcabcbb";
+//        String s = "abcabcbb";
+//        String s = "bbbbb";
+        String s = "pwwkew";
         System.out.println(lengthOfLongestSubstring(s));
     }
     public static int lengthOfLongestSubstring(String s) {
-        if (s.length() == 0) return 0;
-        int l = 0;
-        int r = 0;
+        int[] char_map = new int[129];
         int res = 0;
-        int[] already = new int[26];
-        for (int i = 0; i < 26; i++) already[i] = 0;
-        already[s.charAt(0) - 'a'] += 1;
-//        r ++;
-        int max_idx = s.length() - 1;
-        while (r < max_idx){
-//            获取下一位的索引
-            int u = s.charAt(r + 1) - 'a';
-//            如果下一位在字典里出现过
-            if (already[u] != 0){
-                already[s.charAt(l) - 'a'] -= 1;
-                l ++;
-            }else {
-                r ++;
-                already[s.charAt(r) - 'a'] += 1;
+        int fast = 0, slow = 0;
+        while (fast < s.length()){
+            int c = s.charAt(fast) - ' ';
+            if (char_map[c] == 0){
+                char_map[c]++;
+                fast++;
+            } else {
+                char_map[s.charAt(slow) - ' '] --;
+                slow++;
             }
-            res = max(res, r - l + 1);
+            res = Math.max(res, fast - slow);
         }
         return res;
     }

@@ -1,6 +1,12 @@
 package Solution;
 
 public class Hot100_016_033_search {
+    public static void main(String[] args) {
+//        int[] tmp = {5,6,0,1,2,3,4};
+//        int[] tmp = {2,4,5,6,7,0,1};
+        int[] tmp = {3, 1};
+        System.out.println(search(tmp, 3));
+    }
     public static int search(int[] nums, int target) {
         if (nums == null || nums.length == 0){
             return -1;

@@ -1,47 +1,53 @@
 package Solution;
 
 public class Hot100_015_031_nextPermutation {
+    public static void main(String[] args) {
+//        int[] tmp = {1, 7, 6, 5, 4};
+//        System.out.println(nextPermutation(tmp));
+    }
     public static void nextPermutation(int[] nums) {
-//        if (nums.length <= 1) return;
-
-//        从后往前数，遇到的第一个： nums[i] < nums[i+1]的
-        int n = nums.length;
-        int flag = n - 2;
+        int len = nums.length;
+//        找到第一个升序的位置记为 flag
+        int flag = len-2;
         while (flag >= 0 && nums[flag] >= nums[flag+1]){
-//            从右往左找，找到第一个升序的地方
-            flag --;
+            flag--;
         }
-//        如果整个序列都是降序，所有的都逆序
-        if (flag < 0) swapAll(nums, 0, n-1);
-        else {
-//            正常情况：遇到了第一个升序的位置
-            int l = flag + 1;
-            int r = n - 1;
-            while (l < r){
-//                二分查找，先找到使得flag交换后后能够按照降序排列的位置
-//                找到第一个比flag大的数
-                int mid = l + r + 1 >> 1;
-                if (nums[mid] > nums[flag]){
-                    l = mid;
-                }
-                else r = mid -1;
+        if (flag < 0) {
+            swapAll(nums, 0, len-1);
+            return;
+        }
+//            二分查找，找到降序序列中第一个比flag大的数
+        int l = flag+1;
+        int r = len-1;
+        while (l<r){
+            int mid = l+r+1 >> 1; // 偏向于取右边界
+            if (nums[mid] > nums[flag]){
+                l = mid;
+            } else {
+                r = mid-1;
             }
-            swap(nums, flag, l);
-            swapAll(nums, flag+1, n-1);
         }
+//        直接顺序查找也是0ms
+//        int first = len-1;
+//        while (nums[first] < nums[flag]) first--;
+//        swap(nums, first, flag);
+//        交换两个数，然后交换所有逆序部分
+        System.out.println(l);
+        swap(nums, l, flag);
+        swapAll(nums, flag+1, len-1);
     }
 
-    public static void swapAll(int[] arr, int l, int r){
+    public static void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
+    public static void swapAll(int[] nums, int l, int r){
         while (l < r){
-            swap(arr, l, r);
-            l ++;
-            r --;
+            swap(nums, l, r);
+            l++;
+            r--;
         }
-    }
-
-    public static void swap(int[] arr, int i, int j){
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
     }
 }

@@ -13,22 +13,27 @@ public class Hot100_022_049_groupAnagrams {
         }
     }
     public static List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (int i = 0; i < strs.length; i++) {
-            char[] unorder_key = strs[i].toCharArray();
-            Arrays.sort(unorder_key);
-//            String order_key = String.valueOf(unorder_key);
-            String order_key = new String(unorder_key);
-            System.out.println("order_key: " + order_key);
-            if (!map.containsKey(order_key)){
-                map.put(order_key, new ArrayList<>());
-            }
-            map.get(order_key).add(strs[i]);
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String s: strs){
+            String code = encode(s);
+            map.putIfAbsent(code, new LinkedList<>());
+            map.get(code).add(s);
         }
-        List<List<String>> res = new ArrayList<>();
-        for (Map.Entry<String, List<String>> entry: map.entrySet()){
-            res.add(entry.getValue());
+
+        List<List<String>> res = new LinkedList<>();
+        for (List<String> v : map.values()){
+            res.add(v);
         }
         return res;
     }
+
+    static String encode(String s){
+        char[] cnt = new char[26];
+        for(char c : s.toCharArray()){
+            int index = c - 'a';
+            cnt[index]++;
+        }
+        return new String(cnt);
+    }
+
 }

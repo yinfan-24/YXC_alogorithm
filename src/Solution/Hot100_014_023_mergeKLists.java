@@ -1,6 +1,5 @@
 package Solution;
 
-import java.util.List;
 import java.util.PriorityQueue;
 
 public class Hot100_014_023_mergeKLists {
@@ -8,8 +7,8 @@ public class Hot100_014_023_mergeKLists {
     PriorityQueue<ListNode> priorityQueue = new PriorityQueue<>((o1, o2) -> o1.val - o2.val);
 
     public ListNode mergeKLists(ListNode[] lists) {
-        for (ListNode tmp : lists){
-            if (tmp != null) priorityQueue.add(tmp);
+        for (ListNode i: lists) {
+            if (i != null) priorityQueue.add(i);
         }
 
         ListNode head = new ListNode();
@@ -17,9 +16,7 @@ public class Hot100_014_023_mergeKLists {
         while (!priorityQueue.isEmpty()){
             trail.next = priorityQueue.poll();
             trail = trail.next;
-            if (trail.next != null){
-                priorityQueue.add(trail.next);
-            }
+            if (trail.next != null) priorityQueue.add(trail.next);
         }
 
         return head.next;

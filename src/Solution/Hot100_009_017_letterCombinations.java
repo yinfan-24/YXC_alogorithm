@@ -16,38 +16,34 @@ public class Hot100_009_017_letterCombinations {
     }
     public static List<String> res = new ArrayList<>();
     public static List<String> letterCombinations(String digits) {
+        res.clear();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("2", "abc");
+        map.put("3", "def");
+        map.put("4", "ghi");
+        map.put("5", "jkl");
+        map.put("6", "mno");
+        map.put("7", "pqrs");
+        map.put("8", "tuv");
+        map.put("9", "wxyz");
 
-        Map<String, String> map = new HashMap<String, String>(){
-            {
-                put("2", "abc");
-                put("3", "def");
-                put("4", "ghi");
-                put("5", "jkl");
-                put("6", "mno");
-                put("7", "pqrs");
-                put("8", "tuv");
-                put("9", "wxyz");
-            }
-        };
         backTrack(digits, map, 0, new StringBuilder());
         return res;
     }
 
-    static void backTrack(String digits, Map<String, String> map, int index, StringBuilder sb){
-        res.clear();
-
-//        判断回溯
-        if (sb.length() == digits.length()){
+    public static void backTrack(String digit, HashMap<String, String> map, int idx, StringBuilder sb){
+        if (sb.length() == digit.length()){
             if (!sb.toString().isEmpty()){
-                res.add(new StringBuilder(sb).toString());
+                res.add(sb.toString());
             }
             return;
         }
-        String cur = digits.substring(index, index+1);
+
+        String cur = digit.substring(idx, idx+1);
         for (int i = 0; i < map.get(cur).length(); i++) {
             sb.append(map.get(cur).charAt(i));
-            backTrack(digits, map, index + 1, sb);
-            sb.deleteCharAt(sb.length() - 1);
+            backTrack(digit, map, idx+1, sb);
+            sb.deleteCharAt(sb.length()-1);
         }
     }
 }
