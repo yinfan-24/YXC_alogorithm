@@ -3,24 +3,23 @@ package Solution;
 import java.util.*;
 
 public class Hot100_041_102_levelOrder {
+    List<List<Integer>> res;
     public List<List<Integer>> levelOrder(TreeNode root) {
-        if (root == null) return Collections.EMPTY_LIST;
-
-        List<List<Integer>> res = new ArrayList<>();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-
-        while (!queue.isEmpty()){
-            int n = queue.size();
-            List<Integer> list = new ArrayList<>();
-            for (int i = 0; i < n; i++) {
-                TreeNode top = queue.poll();
-                list.add(top.val);
-                if (top.left != null) queue.offer(top.left);
-                if (top.right != null) queue.offer(top.right);
-            }
-            res.add(list);
-        }
+        res = new LinkedList<>();
+        recursion(root, 0);
         return res;
+    }
+
+    private void recursion(TreeNode root, int deep){
+        if (root == null) return;
+
+        deep++;
+        if (res.size() < deep){
+            List<Integer> item = new LinkedList<>();
+            res.add(item);
+        }
+        res.get(deep-1).add(root.val);
+        recursion(root.left, deep);
+        recursion(root.right, deep);
     }
 }
