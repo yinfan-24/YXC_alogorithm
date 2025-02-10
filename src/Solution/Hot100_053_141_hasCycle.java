@@ -1,21 +1,21 @@
 package Solution;
 
 public class Hot100_053_141_hasCycle {
-    public boolean hasCycle(ListNode head) {
-        if (head == null || head.next == null) {
-            return false;
-        }
-        ListNode fast = head.next;
+    public ListNode detectCycle(ListNode head) {
         ListNode slow = head;
-
-        while (slow != fast){
-            if (fast == null || fast.next == null){
-                return false;
-            }
-
-            slow = slow.next;
+        ListNode fast = head;
+//        遇到尾节点则说明无环
+        while (fast != null && fast.next != null){
             fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow){
+                while (head != slow){
+                    slow = slow.next;
+                    head = head.next;
+                }
+                return head;
+            }
         }
-        return true;
+        return null;
     }
 }

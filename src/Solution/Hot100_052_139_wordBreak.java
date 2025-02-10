@@ -1,23 +1,28 @@
 package Solution;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Hot100_052_139_wordBreak {
-    public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> map = new HashSet<>(wordDict);
-        boolean[] dp = new boolean[s.length() + 1];
-        dp[0] = true;
+    public boolean wordBreak(String s, List<String> wordDict){
+        int n = s.length();
+        int[] memo = new int[n];
+        Arrays.fill(memo, -1);
+        return dfs(s, 0, memo, wordDict);
+    }
 
-        for (int i = 1; i <= s.length(); i++) {
-            for (int j = 0; j < i; j++) {
-                if (dp[j] && map.contains(s.substring(j, i))){
-                    dp[i] = true;
-                    break;
-                }
+    private static boolean dfs(String s, int index, int[] memo, List<String> wordDict){
+        if (index == s.length()) return true;
+        if (memo[index] != -1) return memo[index] == 1;
+        for (String word: wordDict){
+            if (s.startsWith(word, index) && dfs(s, index+word.length(), memo, wordDict)){
+                memo[index] = 1;
+                return true;
             }
         }
-        return dp[s.length()];
+        memo[index] = 0;
+        return memo[0] == 1;
     }
 }
