@@ -2,41 +2,24 @@ package Solution;
 
 public class Hot100_054_161_getIntersectionNode {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-
-        ListNode a = headA;
-        ListNode b = headB;
-        int n = 0, m = 0;
-        while (a != null){
-            a = a.next;
-            n ++;
-        }
-        while (b != null){
-            b = b.next;
-            m ++;
+        ListNode curA = headA, curB = headB;
+        while (curA != null && curB != null){
+            curA = curA.next;
+            curB = curB.next;
         }
 
-        a = headA;
-        b = headB;
-        int i = 0;
-        if (n < m){
-            while (i + n < m) {
-                i ++;
-                b = b.next;
-            }
-        }else {
-            while (i + m < n) {
-                i ++;
-                a = a.next;
-            }
-
+        while (curA != null){
+            curA = curA.next;
+            headA = headA.next;
         }
-        while (a != null && b != null){
-            if (a == b) return a;
-            else {
-                a = a.next;
-                b = b.next;
-            }
+        while (curB != null){
+            curB = curB.next;
+            headB = headB.next;
         }
-        return null;
+        while (headA != headB){
+            headA = headA.next;
+            headB = headB.next;
+        }
+        return headA;
     }
 }

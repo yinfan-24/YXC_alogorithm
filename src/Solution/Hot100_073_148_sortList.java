@@ -3,53 +3,69 @@ package Solution;
 
 import sun.plugin2.gluegen.runtime.StructAccessor;
 
+import java.net.Inet4Address;
+
 public class Hot100_073_148_sortList {
     public ListNode sortList(ListNode head) {
-        return sortList(head, null);
-    }
-
-    public ListNode sortList(ListNode head, ListNode tail){
-        if (head == null) return head;
-        if (head.next == tail){
-            head.next = null;
-            return head;
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        ListNode cur = head;
+        while (cur != null){
+            max = Math.max(cur.val, max);
+            min = Math.min(cur.val, min);
+            cur = cur.next;
         }
-//        切分
-        ListNode slow = head, fast = head;
-        while (fast != tail){
-            fast = fast.next;
-            slow = slow.next;
-            if (fast != tail){
-                fast = fast.next;
+
+        int[] arr = new int[max-min+1];
+        cur = head;
+        while (cur != null){
+            arr[cur.val - min]++;
+            cur = cur.next;
+        }
+
+        cur = head;
+        for (int i = 0; i < arr.length; i++) {
+            while (arr[i] > 0){
+                cur.val = i+min;
+                arr[i]--;
+                cur = cur.next;
             }
         }
-
-        ListNode mid = slow;
-        ListNode list1 = sortList(head, mid);
-        ListNode list2 = sortList(mid, tail);
-        ListNode sorted = mergeList(list1, list2);
-        return sorted;
+        return head;
     }
 
-    public ListNode mergeList(ListNode node1, ListNode node2){
-        ListNode newHead = new ListNode(0);
-        ListNode tmp = newHead, tmp1 = node1, tmp2 = node2;
-        while (tmp1 != null && tmp2 != null){
-            if (tmp1.val <= tmp2.val){
-                tmp.next = tmp1;
-                tmp1 = tmp1.next;
-            }else {
-                tmp.next = tmp2;
-                tmp2 = tmp2.next;
-            }
-            tmp = tmp.next;
-        }
-        if (tmp1 != null){
-            tmp.next = tmp1;
-        }else if (tmp2 != null){
-            tmp.next = tmp2;
-        }
-        return newHead.next;
-    }
-
+//    private ListNode sortList(ListNode head, ListNode trail) {
+//        if (head == trail) return null; // 修复1：处理空区间
+//        if (head.next == trail) {
+//            head.next = null; // 断开链表
+//            return head;
+//        }
+//
+//        ListNode fast = head, slow = head;
+//        while (fast != trail && fast.next != trail) {
+//            fast = fast.next.next;
+//            slow = slow.next;
+//        }
+//
+//        ListNode left = sortList(head, slow); // 左区间 [head, slow)
+//        ListNode right = sortList(slow, trail); // 右区间 [slow, trail)
+//        return mergeList(left, right);
+//    }
+//
+//    private ListNode mergeList(ListNode l1, ListNode l2) {
+//        ListNode dummy = new ListNode();
+//        ListNode curr = dummy;
+//        while (l1 != null && l2 != null) {
+//            if (l1.val < l2.val) {
+//                curr.next = l1;
+//                l1 = l1.next;
+//            } else {
+//                curr.next = l2;
+//                l2 = l2.next;
+//            }
+//            curr = curr.next;
+//        }
+//        curr.next = (l1 != null) ? l1 : l2;
+//        return dummy.next;
+//    }
 }

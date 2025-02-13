@@ -5,30 +5,30 @@ import java.util.LinkedList;
 import java.util.Map;
 
 class MinStack {
-    Deque<Integer> help_stack;
-    Deque<Integer> min_stack;
+    int min = Integer.MAX_VALUE;
+    LinkedList<Integer> stack = new LinkedList<>();
+    MinStack(){};
 
-    public MinStack() {
-        this.min_stack = new LinkedList<>();
-        this.help_stack = new LinkedList<>();
-        help_stack.push(Integer.MAX_VALUE);
+    void push(int val){
+        if (val <= this.min){
+            this.stack.push(this.min);
+            this.min = val;
+        }
+        this.stack.push(val);
     }
 
-    public void push(int val) {
-        this.help_stack.push(Math.min(help_stack.peek(), val));
-        this.min_stack.push(val);
+    void pop(){
+        int x = this.stack.pop();
+        if (x == this.min){
+            this.min = this.stack.pop();
+        }
+    }
+    int top(){
+        return this.stack.peek();
+    }
+    int getMin(){
+        return this.min;
     }
 
-    public void pop() {
-        this.min_stack.pop();
-        this.help_stack.pop();
-    }
 
-    public int top() {
-        return this.min_stack.peek();
-    }
-
-    public int getMin() {
-        return this.help_stack.peek();
-    }
 }

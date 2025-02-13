@@ -9,7 +9,7 @@ public class Hot100_031_075_sortColors {
     private static void quickSort(int[] nums, int begin, int end){
         if (begin >= end) return;
         int ref = nums[begin+end >> 1];
-        int l = begin--, r = end++;
+        int l = begin-1, r = end+1;
         while (l < r){
             while (nums[++l] < ref);
             while (nums[--r] > ref);

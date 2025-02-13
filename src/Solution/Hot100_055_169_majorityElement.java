@@ -4,16 +4,24 @@ import java.util.HashMap;
 
 public class Hot100_055_169_majorityElement {
     public int majorityElement(int[] nums) {
-        int n = nums.length;
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (int num : nums){
-            if (map.containsKey(num)){
-                map.put(num, map.get(num) + 1);
-            }else {
-                map.put(num, 1);
+        return quickSelect(nums, nums.length/2+1,0, nums.length-1);
+    }
+
+    private static int quickSelect(int[] nums, int k, int begin, int end){
+        if (begin >= end) return nums[begin];
+        int ref = nums[begin+end >> 1];
+        int l = begin-1, r = end+1;
+        while (l < r){
+            while (nums[++l] < ref);
+            while (nums[--r] > ref);
+            if (l < r){
+                int tmp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = tmp;
             }
-            if (map.get(num) > (n+1)/2) return map.get(num);
         }
-        return 0;
+        int len = r-begin+1;
+        if (len >= k) return quickSelect(nums, k, begin, r);
+        else return quickSelect(nums, k-len, r+1, end);
     }
 }
